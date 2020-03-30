@@ -2,7 +2,9 @@
 // Basically, this is the same as From. The main difference is that this should return a Result type
 // instead of the target type itself.
 // You can read more about it at https://doc.rust-lang.org/std/convert/trait.TryFrom.html
+
 use std::convert::{TryInto, TryFrom};
+
 
 #[derive(Debug)]
 struct Person {
@@ -10,7 +12,6 @@ struct Person {
     age: usize,
 }
 
-// I AM NOT DONE
 // Your task is to complete this implementation
 // in order for the line `let p = Person::try_from("Mark,20")` to compile
 // and return an Ok result of inner type Person.
@@ -28,6 +29,28 @@ struct Person {
 impl TryFrom<&str> for Person {
     type Error = String;
     fn try_from(s: &str) -> Result<Self, Self::Error> {
+        if s.len() == 0 {
+            return Err(format!("cannot convert from {} to Person.", s));
+        }
+
+        let mut person_info: Vec<&str> = s.split(',').collect();
+        if person_info.len() != 2 {
+            let msg = String::from("input &str should have only one comma, not in first nor in last position.");
+            return Err(msg);
+        }
+
+        let _age = person_info.pop().unwrap();
+        let _name = person_info.pop().unwrap();
+
+        let _age = match _age.parse::<usize>() {
+            Ok(a) => a,
+            Err(_) => return Err(String::from("error parsing Person's age.")),
+        };
+
+        Ok(Person {
+            name: String::from(_name),
+            age: _age
+        })
     }
 }
 

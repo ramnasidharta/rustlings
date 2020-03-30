@@ -5,7 +5,7 @@
 // Execute `rustlings hint arc1` for hints :)
 
 
-use std::sync::Arc;
+use std::sync::{Mutex, Arc};
 use std::thread;
 
 fn main() {

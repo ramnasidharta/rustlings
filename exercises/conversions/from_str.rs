@@ -10,7 +10,6 @@ struct Person {
     age: usize,
 }
 
-// I AM NOT DONE
 // Steps:
 // 1. If the length of the provided string is 0, then return an error
 // 2. Split the given string on the commas present in it
@@ -21,6 +20,28 @@ struct Person {
 impl FromStr for Person {
     type Err = String;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s.len() == 0 {
+            return Err(format!("cannot convert from {} to Person.", s));
+        }
+
+        let mut person_info: Vec<&str> = s.split(',').collect();
+        if person_info.len() != 2 {
+            let msg = String::from("input &str should have only one comma, not in first nor in last position.");
+            return Err(msg);
+        }
+
+        let _age = person_info.pop().unwrap();
+        let _name = person_info.pop().unwrap();
+
+        let _age = match _age.parse::<usize>() {
+            Ok(a) => a,
+            Err(_) => return Err(String::from("error parsing Person's age.")),
+        };
+
+        Ok(Person {
+            name: String::from(_name),
+            age: _age
+        })
     }
 }
 

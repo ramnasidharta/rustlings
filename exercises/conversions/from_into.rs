@@ -1,6 +1,7 @@
 // The From trait is used for value-to-value conversions.
 // If From is implemented correctly for a type, the Into trait should work conversely.
 // You can read more about it at https://doc.rust-lang.org/std/convert/trait.From.html
+
 #[derive(Debug)]
 struct Person {
     name: String,
@@ -18,9 +19,8 @@ impl Default for Person {
     }
 }
 
-// I AM NOT DONE
 // Your task is to complete this implementation
-// in order for the line `let p = Person::from("Mark,20")` to compile
+// in order for the line `let p1 = Person::from("Mark,20")` to compile
 // Please note that you'll need to parse the age component into a `usize`
 // with something like `"4".parse::<usize>()`. The outcome of this needs to
 // be handled appropriately.
@@ -34,6 +34,27 @@ impl Default for Person {
 // Otherwise, then return an instantiated Person onject with the results
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if s.len() == 0 {
+            return Person::default();
+        }
+
+        let mut person_info: Vec<&str> = s.split(',').collect();
+        if person_info.len() != 2 {
+            return Person::default();
+        }
+
+        let _age = person_info.pop().unwrap();
+        let _name = person_info.pop().unwrap();
+
+        let _age = match _age.parse::<usize>() {
+            Ok(a) => a,
+            Err(_) => return Person::default(),
+        };
+
+        Person {
+            name: String::from(_name),
+            age: _age
+        }
     }
 }
 
